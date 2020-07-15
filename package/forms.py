@@ -1,6 +1,6 @@
 from floppyforms.__future__ import ModelForm, TextInput
 
-from package.models import Category, Package, PackageExample
+from package.models import Category, Package, PackageExample, PackageReview
 
 
 def package_help_text():
@@ -51,3 +51,12 @@ class DocumentationForm(ModelForm):
     class Meta:
         model = Package
         fields = ["documentation_url", ]
+
+
+#  My Code
+
+class PackageReviewForm(ModelForm):
+    
+    class Meta:
+        model = PackageReview
+        fields = ['comment', 'rating']

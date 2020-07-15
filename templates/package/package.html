@@ -246,7 +246,25 @@
 
         <!-- My code -->
         <div class="col-sm-12">
-            <h1>Review Testing</h1>
+            <h1>Reviews</h1>
+            <h2>Give a quick review.</h2>
+            
+            <form action="{% url 'package_reviews' package.slug %}" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" name="" id="">
+            </form>
+
+            <div>
+                {% for review in reviews %}
+                <p>
+                    {{review.user_id}}
+                    {{review.rating}}
+                    {{review.comment}}
+                    {{review.review_date}}
+                </p>
+                {% endfor %}
+            </div>
             <p> Review1</p>
             <p> Review1</p>
             <p> Review1</p>

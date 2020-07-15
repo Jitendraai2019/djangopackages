@@ -422,4 +422,4 @@ class PackageReview(models.Model):
     review_date = models.DateField(auto_now_add=True)
 
     def __str__(self):
-        return self.id
+        return self.user_id.username

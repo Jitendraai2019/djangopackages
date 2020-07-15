@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.urls import path
 from django.views.generic.dates import ArchiveIndexView
 
 from package.models import Package
@@ -16,8 +17,10 @@ from package.views import (
                             package_detail,
                             post_data,
                             edit_documentation,
-                            github_webhook
+                            github_webhook,
+                            package_review
                             )
+# app_name = 'package'
 
 urlpatterns = [
 
@@ -112,4 +115,11 @@ urlpatterns = [
         view=github_webhook,
         name="github_webhook"
     ),
+
+    #  url(
+    #     regex="^(?P<slug>[-\w]+)/reviews/add-or-update$",
+    #     view=package_review,
+    #     name="package_reviews",
+    # ),
+    path('p/<slug>/reviews', package_review, name="package_reviews"),
 ]

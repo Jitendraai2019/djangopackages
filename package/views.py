@@ -21,6 +21,11 @@ from package.forms import PackageForm, PackageExampleForm, DocumentationForm
 from package.models import Category, Package, PackageExample
 from package.repos import get_all_repos
 
+# my code
+from package.forms import PackageReviewForm
+from package.models import PackageReview
+from django.contrib.auth.models import User
+
 from .utils import quote_plus
 
 
@@ -422,3 +427,33 @@ def github_webhook(request):
         package.last_fetched = timezone.now()
         package.save()
     return HttpResponse()
+
+#  My code 
+
+def package_review(request, slug, template_name="package/package.html"):
+    package = get_object_or_404(Package, slug=slug)
+    form = PackageReviewForm()
+    try:
+        loggedin_user = User.objects.get(username=request.user)
+    except:
+        pass
+   
+    if request.method == 'POST':
+        form = PackageReviewForm(request.POST)
+        if form.is_valid():
+            PackageReview.objects.create(
+                package_id=package,
+                user_id=loggedin_user,
+                comment=request.POST['comment'],
+                rating=request.POST['rating']
+            )
+    reviews = PackageReview.objects.filter(package_id=package, user_id=loggedin_user)
+
+    context = {
+        'package': package,
+        'form': form,
+        'reviews': reviews,
+        # 'loggedin_user': loggedin_user
+    }
+
+    return render(request, template_name, context)
