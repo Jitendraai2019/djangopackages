@@ -429,25 +429,32 @@ def github_webhook(request):
     return HttpResponse()
 
 #  My code 
-
+@login_required
 def package_review(request, slug, template_name="package/package.html"):
     package = get_object_or_404(Package, slug=slug)
     form = PackageReviewForm()
-    try:
-        loggedin_user = User.objects.get(username=request.user)
-    except:
-        pass
+    # try:
+    #     loggedin_user = User.objects.get(username=request.user)
+    # except:
+    #     pass
    
     if request.method == 'POST':
         form = PackageReviewForm(request.POST)
         if form.is_valid():
-            PackageReview.objects.create(
-                package_id=package,
-                user_id=loggedin_user,
-                comment=request.POST['comment'],
-                rating=request.POST['rating']
-            )
-    reviews = PackageReview.objects.filter(package_id=package, user_id=loggedin_user)
+            old_review = PackageReview.objects.filter(package_id=package, user_id=request.user).first()
+
+            if old_review:
+                old_review.comment = request.POST['comment']
+                old_review.rating = request.POST['rating']
+                old_review.save()
+            else:
+                PackageReview.objects.create(
+                    package_id=package,
+                    user_id=request.user,
+                    comment=request.POST['comment'],
+                    rating=request.POST['rating']
+                )
+    reviews = PackageReview.objects.filter(package_id=package)
 
     context = {
         'package': package,

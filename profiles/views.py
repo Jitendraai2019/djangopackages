@@ -62,7 +62,8 @@ user_logged_in.connect(github_user_update)
 
 class LogoutView(RedirectView):
     pattern_name = "home"
-
+    
     def get_redirect_url(self, *args, **kwargs):
+        print('*******************')
         logout(self.request)
         return super().get_redirect_url(*args, **kwargs)

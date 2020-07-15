@@ -257,32 +257,18 @@
 
             <div>
                 {% for review in reviews %}
-                <p>
-                    {{review.user_id}}
-                    {{review.rating}}
-                    {{review.comment}}
+                    <h3>{{review.user_id}}</h3>
+                    <p>Rating: {{review.rating}} </p>
+
+                    <!-- <label for="">C</label> -->
+                    {{review.comment}}<br>
+                    
                     {{review.review_date}}
                 </p>
                 {% endfor %}
             </div>
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
+    
 
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
-            <p> Review1</p>
-
-            <p> Review1</p>
         </div>
         <!-- my code end -->
 
