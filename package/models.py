@@ -401,3 +401,25 @@ class Version(BaseModel):
 
     def __str__(self):
         return "%s: %s" % (self.package.title, self.number)
+
+
+# My code
+
+class PackageReview(models.Model):
+    """Creating a model for giving a review to a package."""
+    Ratings = (
+        (0, 'None'),
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5')
+    )
+    package_id  = models.ForeignKey(Package, on_delete=models.CASCADE)
+    user_id     = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment     = models.TextField(max_length=300)
+    rating      = models.IntegerField(choices=Ratings, default=0)
+    review_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.id
