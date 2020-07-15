@@ -13,6 +13,8 @@ from django.contrib.auth.signals import user_logged_in
 
 # from social_auth.signals import pre_update
 # from social_auth.backends.contrib.github import GithubBackend
+from django.shortcuts import redirect
+
 
 from profiles.forms import ProfileForm
 from profiles.models import Profile
@@ -67,3 +69,7 @@ class LogoutView(RedirectView):
         print('*******************')
         logout(self.request)
         return super().get_redirect_url(*args, **kwargs)
+
+def user_logout(request):
+    logout(request)
+    return redirect('home')

@@ -10,7 +10,11 @@ from core.apiv1 import apiv1_gone
 from homepage.views import homepage, error_404_view, error_500_view, health_check_view, SitemapView
 from package.views import category, python3_list
 
-from profiles.views import LogoutView
+# from profiles.views import LogoutView
+
+# my code
+from django.urls import path
+from profiles.views import user_logout
 
 urlpatterns = [
 
@@ -32,7 +36,8 @@ urlpatterns = [
     url(r"^python3/$", python3_list, name="py3_compat"),
 
     # url(regex=r'^login/$', view=TemplateView.as_view(template_name='pages/login.html'), name='login',),
-    url(r'^logout/$', LogoutView, {'next_page': '/'}, 'logout',),
+    # url(r'^logout/$', LogoutView, {'next_page': '/'}, 'logout',),
+    path('logout/', user_logout ,name='logout'),
 
     # static pages
     url(r"^about/$", TemplateView.as_view(template_name='pages/faq.html'), name="about"),
