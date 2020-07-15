@@ -429,8 +429,11 @@ def github_webhook(request):
     return HttpResponse()
 
 #  My code 
+
 @login_required
 def package_review(request, slug, template_name="package/package.html"):
+    """Either add or update a review."""
+
     package = get_object_or_404(Package, slug=slug)
     form = PackageReviewForm()
     # try:
@@ -464,3 +467,16 @@ def package_review(request, slug, template_name="package/package.html"):
     }
 
     return render(request, template_name, context)
+
+@login_required
+def delete_package_review(request, slug):
+    """Delete a review."""
+    package = get_object_or_404(Package, slug=slug)
+    old_review = PackageReview.objects.filter(package_id=package, user_id=request.user).first()
+    
+    if old_review:
+        old_review.delete()
+        return redirect('package_reviews', package.slug)
+    else:
+        return HttpResponse("I have not written any review.")
+    

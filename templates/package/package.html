@@ -247,6 +247,7 @@
         <!-- My code -->
         <div class="col-sm-12">
             <h1>Reviews</h1>
+            <a href="{% url 'delete_package_review' package.slug %}">Delete your review</a>
             <h2>Give a quick review.</h2>
             
             <form action="{% url 'package_reviews' package.slug %}" method="POST">

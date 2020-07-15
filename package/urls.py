@@ -18,7 +18,9 @@ from package.views import (
                             post_data,
                             edit_documentation,
                             github_webhook,
-                            package_review
+                            # my code
+                            package_review,
+                            delete_package_review
                             )
 # app_name = 'package'
 
@@ -122,4 +124,5 @@ urlpatterns = [
     #     name="package_reviews",
     # ),
     path('p/<slug>/reviews', package_review, name="package_reviews"),
+    path('p/<slug>/reviews/delete', delete_package_review, name="delete_package_review")
 ]
