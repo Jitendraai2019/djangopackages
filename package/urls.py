@@ -20,7 +20,8 @@ from package.views import (
                             github_webhook,
                             # my code
                             package_review,
-                            delete_package_review
+                            delete_package_review,
+                            like_package_review
                             )
 # app_name = 'package'
 
@@ -124,5 +125,6 @@ urlpatterns = [
     #     name="package_reviews",
     # ),
     path('p/<slug>/reviews', package_review, name="package_reviews"),
-    path('p/<slug>/reviews/delete', delete_package_review, name="delete_package_review")
+    path('p/<slug>/reviews/delete', delete_package_review, name="delete_package_review"),
+    path('p/<slug>/reviews/like', like_package_review, name='like_package_review')
 ]

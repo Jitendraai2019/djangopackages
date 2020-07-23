@@ -436,10 +436,6 @@ def package_review(request, slug, template_name="package/package.html"):
 
     package = get_object_or_404(Package, slug=slug)
     form = PackageReviewForm()
-    # try:
-    #     loggedin_user = User.objects.get(username=request.user)
-    # except:
-    #     pass
    
     if request.method == 'POST':
         form = PackageReviewForm(request.POST)
@@ -463,7 +459,7 @@ def package_review(request, slug, template_name="package/package.html"):
         'package': package,
         'form': form,
         'reviews': reviews,
-        # 'loggedin_user': loggedin_user
+        'user': request.user
     }
 
     return render(request, template_name, context)
@@ -478,5 +474,22 @@ def delete_package_review(request, slug):
         old_review.delete()
         return redirect('package_reviews', package.slug)
     else:
-        return HttpResponse("I have not written any review.")
+        return HttpResponse("You have not written any review.")
+
+
+def like_package_review(request, slug):
+    """Add a like or remove a like from a comment."""
+    package_obj = get_object_or_404(Package, slug=slug)
+    user = request.user
+    
+    if request.method == 'POST':
+        review_id = request.POST['review_id']
+        review = PackageReview.objects.get(id=review_id)
+        
+        if user in review.likes.all():
+            review.likes.remove(user)
+        else:
+            review.likes.add(user)
+    
+    return redirect('package_reviews', package_obj.slug)
     

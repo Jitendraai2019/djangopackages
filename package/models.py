@@ -420,6 +420,25 @@ class PackageReview(models.Model):
     comment     = models.TextField(max_length=300)
     rating      = models.IntegerField(choices=Ratings, default=0)
     review_date = models.DateField(auto_now_add=True)
+    likes       = models.ManyToManyField(User, blank=True, default=None, related_name="review_likes")
 
     def __str__(self):
         return self.user_id.username
+
+    @property    
+    def get_likes():
+        return self.likes.all().count()
+
+
+class Like(models.Model):
+
+    LIKE_CHOICES = (
+        ('Like', 'Like'),
+        ('Unlike', 'Unlike'),
+    )
+    user  = models.ForeignKey(User, on_delete=models.CASCADE)
+    post  = models.ForeignKey(PackageReview, on_delete=models.CASCADE)
+    value = models.CharField(choices=LIKE_CHOICES, default='Like', max_length=7)
+
+    def __str__(self):
+        return str(self.post)

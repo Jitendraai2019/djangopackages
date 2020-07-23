@@ -265,6 +265,17 @@
                     {{review.comment}}<br>
                     
                     {{review.review_date}}
+
+                    <form action="{% url 'like_package_review' package.slug %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name='review_id' value="{{review.id}}">
+                        {% if user not in review.likes.all %}
+                            <button class="btn-xs" type="submit">Like</button>
+                        {% else %}
+                            <button class="btn" type="submit">Unlike</button>
+                        {% endif %}
+                    </form>
+                    <strong>{{ review.likes.all.count }} Likes</strong>
                 </p>
                 {% endfor %}
             </div>
