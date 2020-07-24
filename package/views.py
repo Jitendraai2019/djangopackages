@@ -1,5 +1,6 @@
 import importlib
 import json
+import requests
 
 from django.conf import settings
 from django.contrib import messages
@@ -436,7 +437,18 @@ def package_review(request, slug, template_name="package/package.html"):
 
     package = get_object_or_404(Package, slug=slug)
     form = PackageReviewForm()
-   
+
+    # Get all the issues of a selected package.
+    response = requests.get(f'https://api.github.com/repos/Jitendraai2019/{package.title}/issues')
+    issues_data = ''
+    if response.status_code == 200:
+        issues_data = response.json()
+    else:
+        issues_data = response.json()['message']
+        print(issues_data)
+        pass
+
+
     if request.method == 'POST':
         form = PackageReviewForm(request.POST)
         if form.is_valid():
@@ -459,7 +471,8 @@ def package_review(request, slug, template_name="package/package.html"):
         'package': package,
         'form': form,
         'reviews': reviews,
-        'user': request.user
+        'user': request.user,
+        'issues': issues_data
     }
 
     return render(request, template_name, context)
@@ -477,6 +490,7 @@ def delete_package_review(request, slug):
         return HttpResponse("You have not written any review.")
 
 
+@login_required
 def like_package_review(request, slug):
     """Add a like or remove a like from a comment."""
     package_obj = get_object_or_404(Package, slug=slug)
@@ -492,4 +506,18 @@ def like_package_review(request, slug):
             review.likes.add(user)
     
     return redirect('package_reviews', package_obj.slug)
+
+
+# @login_required
+# def list_package_issues(request, slug):
+#     package_obj = get_object_or_404(Package, slug=slug)
     
+#     response = requests.get(f'https://api.github.com/repos/Jitendraai2019/{package.title}/issues')
+#     issues_data = response.json()
+    
+#     context = {
+#         'package': package_obj,
+#         'user': request.user,
+#         'issues': issues_data
+#     } 
+#     return render(request, 'package/package.html', context)

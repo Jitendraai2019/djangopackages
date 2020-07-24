@@ -127,4 +127,6 @@ urlpatterns = [
     path('p/<slug>/reviews', package_review, name="package_reviews"),
     path('p/<slug>/reviews/delete', delete_package_review, name="delete_package_review"),
     path('p/<slug>/reviews/like', like_package_review, name='like_package_review')
+
+    # path('p/<slug>/revies/',)
 ]
